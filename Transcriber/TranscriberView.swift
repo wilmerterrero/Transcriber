@@ -81,12 +81,16 @@ struct TranscriberView: View {
                 bottomBarOverlay
             }
 
-            /// Show the record button
-            Group {
-                recordButtonEffect
-                recordButton
+            /// Show the record button (only on recording list)
+            if selectedRecording == nil {
+                Group {
+                    recordButtonEffect
+                    recordButton
+                }
+                .padding(.bottom, -30)
+                .transition(.move(edge: .bottom).combined(with: .opacity))
+                .animation(.spring(response: 0.3, dampingFraction: 0.7), value: selectedRecording)
             }
-            .padding(.bottom, -30)
         }
         .onDisappear {
             // Stop any playing audio when view disappears
@@ -106,7 +110,9 @@ struct TranscriberView: View {
         VStack(alignment: .leading, spacing: 12) {
             // Back button
             Button {
-                self.selectedRecording = nil
+                withAnimation {
+                    self.selectedRecording = nil
+                }
             } label: {
                 HStack {
                     Image(systemName: "chevron.left")
@@ -141,7 +147,9 @@ struct TranscriberView: View {
                                 recording: recording,
                                 transcriberManager: transcriberManager,
                                 onTap: {
-                                    self.selectedRecording = recording
+                                    withAnimation {
+                                        self.selectedRecording = recording
+                                    }
                                 }
                             )
                             .contentShape(Rectangle())
@@ -225,7 +233,7 @@ struct TranscriberView: View {
         }
         .buttonStyle(RecordButton())
         .disabled(isProcessing ? true : false)
-        .zIndex(3)  // Button above gooey effect
+        .zIndex(4)  // Button above gooey effect
     }
 
     @ViewBuilder
@@ -255,6 +263,7 @@ struct TranscriberView: View {
             }
         }
         .allowsHitTesting(false)  // Ensure gooey effect doesn't block button
+        .zIndex(3)  // Make sure gooey effect is above overlay
     }
 
     @ViewBuilder

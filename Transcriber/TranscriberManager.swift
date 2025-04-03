@@ -15,7 +15,7 @@ final class TranscriberManager {
 
     private(set) var isRecording = false
     private let audioRecorder = AudioRecorder()
-    private let transcriber = TranscriberDataLoader()
+    private let transcriber: TranscriberService
     private let modelContext: ModelContext
     var recordings = [TranscribedAudioRecording]()
     
@@ -26,6 +26,16 @@ final class TranscriberManager {
         let context = AppConstants.swiftDataContainer.mainContext
         self.recordings = fetchPersistedRecordings(context)
         self.modelContext = context
+        
+        #if DEBUG
+        // Use fake transcriber in debug mode
+        self.transcriber = FakeTranscriberService()
+        AppLogger.info("Using fake transcriber service (DEBUG mode)")
+        #else
+        // Use real transcriber in release mode
+        self.transcriber = TranscriberDataLoader()
+        AppLogger.info("Using real OpenAI transcriber service (RELEASE mode)")
+        #endif
     }
 
     /// This pollutes the manager a bit.
