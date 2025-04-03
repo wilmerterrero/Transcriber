@@ -1,0 +1,10 @@
+---
+description: Rules for the agent to follow
+globs: *.swift
+alwaysApply: true
+---
+# Agent Instructions
+
+If you create a new file(s), run the following command afterwards to update the project documentation.
+
+```bash ./Scripts/update_structure.sh```

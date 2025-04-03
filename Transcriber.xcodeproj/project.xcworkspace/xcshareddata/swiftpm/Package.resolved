@@ -1,0 +1,24 @@
+{
+  "originHash" : "89c15ca66d08e57f02f66c99b71824b056457bcd60d8ee37848b3b4f5db96def",
+  "pins" : [
+    {
+      "identity" : "aiproxyswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/lzell/AIProxySwift",
+      "state" : {
+        "branch" : "main",
+        "revision" : "6794dac39dc77cdce9809800980bb495d6576b76"
+      }
+    },
+    {
+      "identity" : "fakery",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/vadymmarkov/Fakery",
+      "state" : {
+        "revision" : "71cb3bf36a808534659d1248780c2bf3c4c4fc91",
+        "version" : "5.1.0"
+      }
+    }
+  ],
+  "version" : 3
+}

@@ -1,0 +1,184 @@
+{
+    "app": "Voice Notes App",
+    "notes": "Don't break the existing code, just add the new components and modify the existing ones to fit the new design using the comments as a guide.",
+    "screens": [
+      {
+        "name": "Recording Detail Screen",
+        "comments": "This is the screen that shows the recording details it will live in the TranscriberView.swift",
+        "layoutModel": {
+          "containerType": "VStack",
+          "spacing": 12,
+          "alignment": "leading",
+          "children": [
+            { "ref": "navigationBar" },
+            { "ref": "recordingCard" },
+            { "ref": "bottomBar" }
+          ]
+        },
+        "components": [
+          {
+            "id": "navigationBar",
+            "type": "navigationBar",
+            "layout": {
+              "position": "top",
+              "alignment": "leading",
+              "padding": "horizontal",
+              "spacing": 8
+            },
+            "components": [
+              {
+                "type": "searchBar",
+                "placeholder": "Search",
+                "layout": {
+                  "size": "fill",
+                  "padding": "horizontal"
+                }
+              },
+              {
+                "type": "segmentedControl",
+                "options": ["All", "Shared", "Starred"],
+                "layout": {
+                  "size": "wrap",
+                  "alignment": "leading"
+                }
+              }
+            ]
+          },
+          {
+            "id": "recordingCard",
+            "type": "card",
+            "layout": {
+              "position": "middle",
+              "padding": "horizontal",
+              "spacing": 10
+            },
+            "components": [
+              {
+                "type": "timestamp",
+                "value": "Today · 1:53 AM",
+                "layout": {
+                  "alignment": "leading"
+                }
+              },
+              {
+                "type": "title",
+                "text": "New Recording",
+                "layout": {
+                  "alignment": "leading",
+                  "font": "headline"
+                }
+              },
+              {
+                "type": "transcript",
+                "text": "Ok, I will mix Spanish and English in this note since I'm bilingual...",
+                "layout": {
+                  "alignment": "leading",
+                  "font": "body",
+                  "padding": "vertical"
+                }
+              },
+              {
+                "type": "audioPlayer",
+                "layout": {
+                  "direction": "horizontal",
+                  "spacing": 6,
+                  "alignment": "center"
+                },
+                "components": [
+                  { "type": "playButton", "layout": { "size": "wrap" } },
+                  { "type": "duration", "value": "00:26", "layout": { "alignment": "center" } }
+                ]
+              },
+              {
+                "type": "actionButtons",
+                "layout": {
+                  "direction": "horizontal",
+                  "alignment": "trailing",
+                  "spacing": 12
+                },
+                "components": [
+                  { "type": "editButton", "icon": "pencil.circle" },
+                  { "type": "moreOptionsButton", "icon": "ellipsis.circle" }
+                ]
+              }
+            ]
+          },
+          {
+            "id": "bottomBar",
+            "type": "toolbar",
+            "comments": "Keep the actual record button at the TranscriberView.swift but place the other buttons along the bottom of the screen like ask ai -> record -> note",
+            "layout": {
+              "position": "bottom",
+              "padding": "horizontal",
+              "spacing": 12,
+              "alignment": "center"
+            },
+            "components": [
+              { "type": "button", "label": "Ask AI", "style": "secondary", "layout": { "size": "fill" } },
+              { "type": "button", "label": "Note", "style": "secondary", "layout": { "size": "fill" } },
+              { "type": "button", "label": "Record", "style": "primary", "layout": { "size": "fill" } }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "AI Action Menu",
+        "trigger": "Ask AI Button",
+        "layoutModel": {
+          "containerType": "VStack",
+          "alignment": "center",
+          "spacing": 8
+        },
+        "components": [
+          {
+            "type": "actionSheet",
+            "title": "Create",
+            "layout": {
+              "position": "overlay",
+              "padding": "all",
+              "alignment": "center"
+            },
+            "options": [
+              "Summary",
+              "Meeting report",
+              "Main points",
+              "To-do list",
+              "Translate",
+              "Tweet",
+              "Blog post",
+              "Email",
+              "Cleanup"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Recording Screen",
+        "layoutModel": {
+          "containerType": "ZStack",
+          "children": [
+            { "ref": "recordingBar" }
+          ]
+        },
+        "components": [
+          {
+            "id": "recordingBar",
+            "type": "recordingControls",
+            "layout": {
+              "position": "bottom",
+              "padding": "horizontal",
+              "alignment": "center",
+              "spacing": 16
+            },
+            "components": [
+              { "type": "button", "label": "Cancel", "style": "destructive" },
+              { "type": "timer", "value": "00:19" },
+              { "type": "pauseButton" },
+              { "type": "button", "label": "Done", "style": "primary" }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  

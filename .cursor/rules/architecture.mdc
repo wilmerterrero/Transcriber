@@ -1,0 +1,64 @@
+---
+description: App Architecture
+globs: *.swift
+alwaysApply: false
+---
+# Transcriber Pro - AI Guide
+
+## Overview
+
+Transcriber is an iOS app built with SwiftUI that allows users to record audio and transcribe it using OpenAI's Whisper model. The app provides a clean, intuitive interface for recording, playing back, and reviewing transcriptions.
+
+## Core Architecture
+
+The app follows a clean architecture with clear separation of concerns:
+
+### Core Components
+
+1. **UI Layer** - SwiftUI views for user interaction
+   - `TranscriberView` - Main view with recording UI and list of transcriptions
+   - `RecordingRowView` - Display of individual recordings in the list
+   - `NoRecordingsView` - Empty state view
+
+2. **Business Logic** - Managers and services
+   - `TranscriberManager` - Central coordinator handling recording and transcription
+   - `AudioRecorder` - Handles audio recording functionality
+   - `TranscriberDataLoader` - Interfaces with OpenAI for transcription
+
+3. **Data Layer** - SwiftData models
+   - `AudioRecording` - Represents a recorded audio file
+   - `TranscribedAudioRecording` - Combines audio recording with its transcript
+
+4. **Utilities**
+   - `MicrophoneSampleVendor` - Provides microphone audio samples
+   - `AudioFileWriter` - Writes audio samples to disk
+   - `FileUtils` - File management utilities
+   - `AppLogger` - Logging functionality
+
+## Data Flow
+
+1. User initiates recording via the UI
+2. `TranscriberManager` coordinates with `AudioRecorder` to start recording
+3. `MicrophoneSampleVendor` captures audio samples and sends them to `AudioFileWriter`
+4. When recording stops, the audio file is saved and sent to `TranscriberDataLoader`
+5. `TranscriberDataLoader` uses OpenAI's Whisper model to transcribe the audio
+6. The transcription is saved with the recording in the SwiftData store
+7. UI is updated to display the new recording and transcript
+
+## Key Technologies
+
+- **SwiftUI** - UI framework
+- **SwiftData** - Persistence framework
+- **AVFoundation** - Audio recording and playback
+- **AIProxy** - Integration with OpenAI's Whisper model for transcription
+
+## Design Patterns
+
+- **MVVM** - Model-View-ViewModel pattern for UI organization
+- **Actor Model** - Using Swift actors for thread safety in audio processing
+- **Dependency Injection** - Components are initialized with their dependencies
+- **Repository Pattern** - For data access through the TranscriberManager
+
+## Data Persistence
+
+The app uses SwiftData to persist recordings and transcriptions, ensuring they're available between app launches. Audio files are stored on disk with appropriate file references maintained in the data model.

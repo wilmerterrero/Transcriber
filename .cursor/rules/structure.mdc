@@ -1,0 +1,70 @@
+---
+description: Project Structure
+globs: *.swift
+alwaysApply: false
+---
+# Project Structure
+
+```
+.
+├── .cursor
+│   └── rules
+│       ├── architecture.mdc
+│       ├── structure.mdc
+│       ├── swift-expert.mdc
+│       └── update-structure-agent.mdc
+├── README.md
+├── Scripts
+│   ├── README.md
+│   ├── increment_build_number.sh
+│   ├── update_structure.sh
+│   ├── update_version.sh
+│   ├── xcode_increment_build.sh
+│   └── xcode_version_update.sh
+├── Transcriber
+│   ├── AppConstants.swift
+│   ├── AppLogger.swift
+│   ├── Assets.xcassets
+│   │   ├── AccentColor.colorset
+│   │   │   └── Contents.json
+│   │   ├── AppIcon.appiconset
+│   │   │   ├── Contents.json
+│   │   │   └── transcribe.png
+│   │   └── Contents.json
+│   ├── AudioFileWriter.swift
+│   ├── AudioRecorder.swift
+│   ├── AudioRecording.swift
+│   ├── ButtonStyles.swift
+│   ├── FileUtils.swift
+│   ├── MicrophoneSampleVendor.swift
+│   ├── ModelContext+Extensions.swift
+│   ├── NoRecordingsView.swift
+│   ├── Preview Content
+│   │   └── Preview Assets.xcassets
+│   │       └── Contents.json
+│   ├── RecordingRowView.swift
+│   ├── TranscribedAudioRecording.swift
+│   ├── TranscriberApp.swift
+│   ├── TranscriberDataLoader.swift
+│   ├── TranscriberManager.swift
+│   └── TranscriberView.swift
+└── Transcriber.xcodeproj
+    ├── project.pbxproj
+    ├── project.xcworkspace
+    │   ├── contents.xcworkspacedata
+    │   ├── xcshareddata
+    │   │   └── swiftpm
+    │   │       └── Package.resolved
+    │   └── xcuserdata
+    │       └── wilmerterrero.xcuserdatad
+    │           └── UserInterfaceState.xcuserstate
+    ├── xcshareddata
+    │   └── xcschemes
+    │       └── Transcriber.xcscheme
+    └── xcuserdata
+        └── wilmerterrero.xcuserdatad
+            └── xcschemes
+                └── xcschememanagement.plist
+
+21 directories, 38 files
+```
