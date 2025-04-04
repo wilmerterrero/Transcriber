@@ -48,7 +48,7 @@ struct ButtonStyles: View {
                             .foregroundColor(.white)
                     }
                 }
-                .buttonStyle(RecordButton())
+                .buttonStyle(ActionButton())
                 
                 Button(){
                     /// do something
@@ -97,7 +97,7 @@ struct ChunkyButtonStyle: ButtonStyle {
     }
 }
 
-struct RecordButton: ButtonStyle {
+struct ActionButton: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .frame(maxWidth:80, maxHeight: 80)
@@ -106,6 +106,14 @@ struct RecordButton: ButtonStyle {
             .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
             .padding(.bottom, 40)
             
+    }
+}
+
+struct FloatingActionButton: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.9 : 1, anchor: .center)
+            .animation(.easeOut(duration: 0.2), value: configuration.isPressed)
     }
 }
 

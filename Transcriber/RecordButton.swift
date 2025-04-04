@@ -29,7 +29,7 @@ struct GooeyRecordButton: View {
                     }
                 }
             }
-            .buttonStyle(RecordButton())
+            .buttonStyle(ActionButton())
             .disabled(isProcessing)
         }
         .frame(width: 100, height: 100)  // Fixed dimensions for the component

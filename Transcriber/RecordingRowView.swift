@@ -30,58 +30,55 @@ struct RecordingRowView: View {
     }
 
     private var detailView: some View {
-        VStack(alignment: .leading, spacing: 10) {
-            // Timestamp
-            Text(formattedDate(date: recording.createdAt))
-                .font(.golosText(size: 12))
-                .foregroundColor(.secondary)
-
-            // Title
-            Text("Recording")
-                .font(.golosText(size: 16, weight: .medium))
-
-            // Transcript
-            Text(recording.transcript)
-                .font(.golosText(size: 14))
-                .lineLimit(isDetailView ? nil : 2)
-                .padding(.vertical, 8)
-
-            // Action Buttons
-            HStack(alignment: .center) {
-                Button {
-                    if isPlaying {
-                        pausePlayback()
-                    } else {
-                        startPlayback()
-                    }
-                } label: {
-                    HStack(spacing: 6) {
-                        Image(systemName: isPlaying ? "pause.circle.fill" : "play.circle.fill")
-                            .font(.system(size: 16, weight: .semibold, design: .rounded))
-
-                        Text("\(recording.audioRecording.duration)s")
-                            .font(.golosText(size: 14))
-                    }
-                }
-                .buttonStyle(
-                    CustomPlayButtonStyle(
-                        isPlaying: isPlaying, isPressed: $isPressed, progress: playbackProgress)
-                )
-                .simultaneousGesture(
-                    DragGesture(minimumDistance: 0)
-                        .onChanged { _ in isPressed = true }
-                        .onEnded { _ in
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                isPressed = false
-                            }
-                        }
-                )
+        VStack(alignment: .leading, spacing: 12) {
+            // Title + Timestamp
+            HStack {
+                Text(generateSmartTitle(for: recording.transcript))
+                    .font(.golosText(size: 16, weight: .semibold))
+                    .foregroundColor(.primary)
+                    .lineLimit(1)
 
                 Spacer()
 
-                HStack(spacing: 12) {
+                Text(formattedDate(date: recording.createdAt))
+                    .font(.golosText(size: 12))
+                    .foregroundColor(.secondary)
+            }
+
+            // Transcript Preview
+            Text(recording.transcript)
+                .font(.golosText(size: 14))
+                .foregroundColor(.secondary)
+                .lineLimit(isDetailView ? nil : 3)
+                .frame(maxWidth: .infinity, alignment: .leading)  // Force frame expansion and align content within frame
+                .multilineTextAlignment(.leading)  // Explicitly align text lines to the left
+
+            // Tags (AI-generated)
+            if let tags = aiTags(for: recording.transcript) {
+                HStack(spacing: 8) {
+                    ForEach(tags, id: \.self) { tag in
+                        Text(tag)
+                            .font(.caption)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .background(Color.blue.opacity(0.15))
+                            .foregroundColor(.blue)
+                            .clipShape(Capsule())
+                    }
+                    Spacer()
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+
+            // Bottom Bar (play, edit, more)
+            HStack {
+                playButton
+
+                Spacer()
+
+                HStack(spacing: 16) {
                     Button {
-                        // Edit action would go here
+                        // Edit action
                     } label: {
                         Image(systemName: "pencil.circle")
                             .font(.system(size: 18))
@@ -89,24 +86,12 @@ struct RecordingRowView: View {
                     }
 
                     Menu {
-                        Text("Create")
-                            .font(.headline)
-                            .foregroundColor(.secondary)
-                            .disabled(true)
+                        ForEach(actionMenuItems, id: \.key) { key, value in
+                            Text("Create")
+                                .font(.headline)
+                                .foregroundColor(.secondary)
+                                .disabled(true)
 
-                        ForEach(
-                            [
-                                "summary-key": ("Summary", "pencil.and.outline"),
-                                "meeting-report-key": ("Meeting report", "doc.text"),
-                                "main-points-key": ("Main points", "list.bullet"),
-                                "to-do-list-key": ("To-do list", "checklist"),
-                                "translate-key": ("Translate", "character.bubble"),
-                                "tweet-key": ("Tweet", "megaphone"),
-                                "blog-post-key": ("Blog post", "square.and.pencil"),
-                                "email-key": ("Email", "envelope"),
-                                "cleanup-key": ("Cleanup", "eraser"),
-                            ].sorted(by: { $0.key < $1.key }), id: \.key
-                        ) { key, value in
                             Button {
                                 handleOptionSelected(key)
                             } label: {
@@ -121,8 +106,8 @@ struct RecordingRowView: View {
                 }
             }
         }
-        .padding(.vertical, 8)
-        .padding(.horizontal)
+        .padding(16)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .opacity(startAnimation ? 1 : 0)
         .offset(y: startAnimation ? 0 : -10)
         .onAppear {
@@ -138,6 +123,98 @@ struct RecordingRowView: View {
         .onDisappear {
             stopPlayback()  // Ensure cleanup on disappear
         }
+    }
+
+    private var playButton: some View {
+        Button {
+            if isPlaying {
+                pausePlayback()
+            } else {
+                startPlayback()
+            }
+        } label: {
+            HStack(spacing: 6) {
+                Image(systemName: isPlaying ? "pause.circle.fill" : "play.circle.fill")
+                    .font(.system(size: 16, weight: .semibold, design: .rounded))
+
+                Text("\(recording.audioRecording.duration)s")
+                    .font(.golosText(size: 14))
+            }
+        }
+        .buttonStyle(
+            CustomPlayButtonStyle(
+                isPlaying: isPlaying, isPressed: $isPressed, progress: playbackProgress)
+        )
+        .simultaneousGesture(
+            DragGesture(minimumDistance: 0)
+                .onChanged { _ in isPressed = true }
+                .onEnded { _ in
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        isPressed = false
+                    }
+                }
+        )
+    }
+
+    private var actionMenuItems: [(key: String, value: (String, String))] {
+        return [
+            "summary-key": ("Summary", "pencil.and.outline"),
+            "meeting-report-key": ("Meeting report", "doc.text"),
+            "main-points-key": ("Main points", "list.bullet"),
+            "to-do-list-key": ("To-do list", "checklist"),
+            "translate-key": ("Translate", "character.bubble"),
+            "tweet-key": ("Tweet", "megaphone"),
+            "blog-post-key": ("Blog post", "square.and.pencil"),
+            "email-key": ("Email", "envelope"),
+            "cleanup-key": ("Cleanup", "eraser"),
+        ].sorted(by: { $0.key < $1.key })
+    }
+
+    private func generateSmartTitle(for transcript: String) -> String {
+        // Extract a smart title from the transcript
+        let words = transcript.components(separatedBy: .whitespacesAndNewlines)
+        let wordLimit = 4
+
+        if words.count <= wordLimit {
+            return transcript
+        } else {
+            return words.prefix(wordLimit).joined(separator: " ") + "..."
+        }
+    }
+
+    private func aiTags(for transcript: String) -> [String]? {
+        // This now uses Faker to generate random tags for demo purposes
+        // In production, you would use NLP to extract real topics from the transcript
+        guard !transcript.isEmpty else { return nil }
+
+        // Common categories of tags that might be relevant for transcripts
+        let businessTags = ["meeting", "strategy", "planning", "followup", "interview", "call"]
+        let personalTags = ["reminder", "idea", "thought", "note", "task", "daily"]
+        let emotionTags = ["important", "urgent", "interesting", "review", "insight"]
+
+        // Randomly select 2-3 tags from different categories
+        var selectedTags = Set<String>()
+
+        // Add 1 random business tag
+        if let businessTag = businessTags.randomElement() {
+            selectedTags.insert(businessTag)
+        }
+
+        // Maybe add a personal tag (50% chance)
+        if Bool.random() {
+            if let personalTag = personalTags.randomElement() {
+                selectedTags.insert(personalTag)
+            }
+        }
+
+        // Maybe add an emotion tag (70% chance)
+        if Double.random(in: 0...1) < 0.7 {
+            if let emotionTag = emotionTags.randomElement() {
+                selectedTags.insert(emotionTag)
+            }
+        }
+
+        return selectedTags.isEmpty ? nil : Array(selectedTags)
     }
 
     private func formattedDate(date: Date) -> String {
