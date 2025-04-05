@@ -135,20 +135,21 @@ struct TranscriberView: View {
                         { index, recording in
                             let isLastElement = index == transcriberManager.recordings.count - 1
 
-                            NavigationLink(value: recording) {
-                                RecordingRowView(
-                                    recording: recording,
-                                    transcriberManager: transcriberManager,
-                                    isDetailView: false
-                                )
-                                .background(
-                                    RoundedRectangle(cornerRadius: 16)
-                                        .fill(Color(.secondarySystemBackground))
-                                )
-                                .padding(.horizontal)
-                                .padding(.bottom, isLastElement ? 100 : 0)  // Add extra padding for last element
-                                .shadow(color: .black.opacity(0.08), radius: 4, x: 0, y: 2)
-                            }
+                            RecordingRowView(
+                                recording: recording,
+                                transcriberManager: transcriberManager,
+                                isDetailView: false,
+                                onTap: {
+                                    navigationPath.append(recording)
+                                }
+                            )
+                            .background(
+                                RoundedRectangle(cornerRadius: 16)
+                                    .fill(Color(.secondarySystemBackground))
+                            )
+                            .padding(.horizontal)
+                            .padding(.bottom, isLastElement ? 100 : 0)  // Add extra padding for last element
+                            .shadow(color: .black.opacity(0.08), radius: 4, x: 0, y: 2)
                         }
                     }
                     .padding(.vertical)

@@ -12,13 +12,13 @@ import UIKit
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         // Print all available fonts for debugging
-        // print("==== AVAILABLE FONTS ====")
-        // for family in UIFont.familyNames.sorted() {
-        //     print("Font Family: \(family)")
-        //     for name in UIFont.fontNames(forFamilyName: family).sorted() {
-        //         print("   Font: \(name)")
-        //     }
-        // }
+         print("==== AVAILABLE FONTS ====")
+         for family in UIFont.familyNames.sorted() {
+             print("Font Family: \(family)")
+             for name in UIFont.fontNames(forFamilyName: family).sorted() {
+                 print("   Font: \(name)")
+             }
+         }
         return true
     }
 }

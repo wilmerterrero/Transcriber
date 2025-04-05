@@ -41,6 +41,7 @@
 		F08CE3662D9F046F009FEC95 /* GolosText-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F08CE35A2D9F046F009FEC95 /* GolosText-Black.ttf */; };
 		F08CE3682D9F060E009FEC95 /* Evas-Signatures.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F08CE3672D9F060E009FEC95 /* Evas-Signatures.ttf */; };
 		F08CE36B2D9F32D1009FEC95 /* Fakery in Frameworks */ = {isa = PBXBuildFile; productRef = F08CE36A2D9F32D1009FEC95 /* Fakery */; };
+		F08CE36D2DA16C2B009FEC95 /* LuckiestGuy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F08CE36C2DA16C2B009FEC95 /* LuckiestGuy.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +79,7 @@
 		F08CE35E2D9F046F009FEC95 /* GolosText-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GolosText-Regular.ttf"; sourceTree = "<group>"; };
 		F08CE35F2D9F046F009FEC95 /* GolosText-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GolosText-SemiBold.ttf"; sourceTree = "<group>"; };
 		F08CE3672D9F060E009FEC95 /* Evas-Signatures.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Evas-Signatures.ttf"; sourceTree = "<group>"; };
+		F08CE36C2DA16C2B009FEC95 /* LuckiestGuy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = LuckiestGuy.ttf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -155,6 +157,7 @@
 			isa = PBXGroup;
 			children = (
 				F08CE3672D9F060E009FEC95 /* Evas-Signatures.ttf */,
+				F08CE36C2DA16C2B009FEC95 /* LuckiestGuy.ttf */,
 				F08CE35A2D9F046F009FEC95 /* GolosText-Black.ttf */,
 				F08CE35B2D9F046F009FEC95 /* GolosText-Bold.ttf */,
 				F08CE35C2D9F046F009FEC95 /* GolosText-ExtraBold.ttf */,
@@ -231,6 +234,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F08CE36D2DA16C2B009FEC95 /* LuckiestGuy.ttf in Resources */,
 				F08CE3612D9F046F009FEC95 /* GolosText-ExtraBold.ttf in Resources */,
 				F08CE3622D9F046F009FEC95 /* GolosText-SemiBold.ttf in Resources */,
 				F08CE3632D9F046F009FEC95 /* GolosText-Medium.ttf in Resources */,

@@ -20,6 +20,6 @@ extension Font {
 
     static func logoText(size: CGFloat) -> Font {
         // Use the correct PostScript name for the font
-        return .custom("EvasSignaturesRegular", size: size)
+        return .custom("LuckiestGuy-Regular", size: size)
     }
 }

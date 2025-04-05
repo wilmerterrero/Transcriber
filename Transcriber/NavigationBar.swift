@@ -12,9 +12,8 @@ struct NavigationBar: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .center) {
                 Text(" yvo")
-                    .font(.logoText(size: 50))
-                    .foregroundColor(textColor)
-                    .offset(y: -9)
+                    .font(.logoText(size: 30))
+                    .foregroundColor(.red)
 
                 Spacer()
 
@@ -68,14 +67,12 @@ struct NavigationBar: View {
                 .background(Color.gray.opacity(0.2))
                 .cornerRadius(10)
                 .padding(.horizontal)
-                .padding(.top, 8)
-                .padding(.bottom, 0)
+                .padding(.vertical, 8)
                 .transition(.move(edge: .top).combined(with: .opacity))
                 .animation(.spring(response: 0.3, dampingFraction: 0.7), value: showSearchBar)
             }
         }
         .fixedSize(horizontal: false, vertical: true)
-        .ignoresSafeArea(edges: .bottom)
     }
 
     var textColor: Color {

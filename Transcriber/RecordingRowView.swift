@@ -56,13 +56,13 @@ struct RecordingRowView: View {
             // Tags (AI-generated)
             if let tags = aiTags(for: recording.transcript) {
                 HStack(spacing: 8) {
-                    ForEach(tags, id: \.self) { tag in
-                        Text(tag)
-                            .font(.caption)
+                    ForEach(tags, id: \.tag) { tagInfo in
+                        Text(tagInfo.tag)
+                            .font(.golosText(size: 12))
                             .padding(.horizontal, 8)
                             .padding(.vertical, 4)
-                            .background(Color.blue.opacity(0.15))
-                            .foregroundColor(.blue)
+                            .background(tagInfo.color.opacity(0.15))
+                            .foregroundColor(tagInfo.color)
                             .clipShape(Capsule())
                     }
                     Spacer()
@@ -86,12 +86,11 @@ struct RecordingRowView: View {
                     }
 
                     Menu {
-                        ForEach(actionMenuItems, id: \.key) { key, value in
-                            Text("Create")
+                        Text("Create")
                                 .font(.headline)
                                 .foregroundColor(.secondary)
                                 .disabled(true)
-
+                        ForEach(actionMenuItems, id: \.key) { key, value in
                             Button {
                                 handleOptionSelected(key)
                             } label: {
@@ -182,39 +181,61 @@ struct RecordingRowView: View {
         }
     }
 
-    private func aiTags(for transcript: String) -> [String]? {
+    private func aiTags(for transcript: String) -> [(tag: String, color: Color)]? {
         // This now uses Faker to generate random tags for demo purposes
         // In production, you would use NLP to extract real topics from the transcript
         guard !transcript.isEmpty else { return nil }
 
-        // Common categories of tags that might be relevant for transcripts
-        let businessTags = ["meeting", "strategy", "planning", "followup", "interview", "call"]
-        let personalTags = ["reminder", "idea", "thought", "note", "task", "daily"]
-        let emotionTags = ["important", "urgent", "interesting", "review", "insight"]
+        // Common categories of tags that might be relevant for transcripts with assigned colors
+        let businessTags: [(tag: String, color: Color)] = [
+            ("meeting", .blue),
+            ("strategy", .purple),
+            ("planning", .indigo),
+            ("followup", .cyan),
+            ("interview", .mint),
+            ("call", .teal)
+        ]
+        
+        let personalTags: [(tag: String, color: Color)] = [
+            ("reminder", .green),
+            ("idea", .mint),
+            ("thought", .teal),
+            ("note", .green),
+            ("task", .mint),
+            ("daily", .teal)
+        ]
+        
+        let emotionTags: [(tag: String, color: Color)] = [
+            ("important", .red),
+            ("urgent", .orange),
+            ("interesting", .yellow),
+            ("review", .red),
+            ("insight", .orange)
+        ]
 
         // Randomly select 2-3 tags from different categories
-        var selectedTags = Set<String>()
+        var selectedTags = [(tag: String, color: Color)]()
 
         // Add 1 random business tag
         if let businessTag = businessTags.randomElement() {
-            selectedTags.insert(businessTag)
+            selectedTags.append(businessTag)
         }
 
         // Maybe add a personal tag (50% chance)
         if Bool.random() {
             if let personalTag = personalTags.randomElement() {
-                selectedTags.insert(personalTag)
+                selectedTags.append(personalTag)
             }
         }
 
         // Maybe add an emotion tag (70% chance)
         if Double.random(in: 0...1) < 0.7 {
             if let emotionTag = emotionTags.randomElement() {
-                selectedTags.insert(emotionTag)
+                selectedTags.append(emotionTag)
             }
         }
 
-        return selectedTags.isEmpty ? nil : Array(selectedTags)
+        return selectedTags.isEmpty ? nil : selectedTags
     }
 
     private func formattedDate(date: Date) -> String {
