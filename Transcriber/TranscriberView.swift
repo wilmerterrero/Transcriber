@@ -32,6 +32,9 @@ struct TranscriberView: View {
     @State private var timerString = "0:00"
     @State private var timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
+    @State private var searchText = ""
+    @FocusState private var isSearchFocused: Bool
+
     private let startSFX: SystemSoundID = 1113
     private let stopSFX: SystemSoundID = 1114
 
@@ -58,6 +61,90 @@ struct TranscriberView: View {
                         // Destination view when a recording is tapped
                         recordingDetailView(recording: recording)
                     }
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Text("yvo")
+                                .font(.logoText(size: 40))
+                                .foregroundColor(.red)
+                                .padding(.top, 8) // safe are for title
+                        }
+                        
+                        ToolbarItem(placement: .navigationBarTrailing) {
+                            HStack(spacing: 16) {
+                                Button {
+                                    // Handle grid button action here
+                                } label: {
+                                    Image(systemName: "calendar")
+                                        .font(.system(size: 16))
+                                        .foregroundColor(textColor)
+                                }
+                                
+                                Button {
+                                    // Handle settings button action here
+                                } label: {
+                                    Image(systemName: "gearshape")
+                                        .font(.system(size: 16))
+                                        .foregroundColor(textColor)
+                                }
+                            }
+                            .padding(.trailing)
+                        }
+                    }
+                    .safeAreaInset(edge: .top, spacing: 0) {
+                        VStack(spacing: 0) {
+                            Spacer()
+                                .frame(height: 15)
+                            
+                            HStack(spacing: 12) {
+                                // Main search container
+                                HStack {
+                                    Image(systemName: "magnifyingglass")
+                                        .foregroundColor(.secondary)
+                                        .opacity(0.8)
+                                    
+                                    TextField("Search", text: $searchText)
+                                        .font(.golosText(size: 18))
+                                        .submitLabel(.search)
+                                        .focused($isSearchFocused)
+                                    
+                                    if !searchText.isEmpty {
+                                        Button {
+                                            searchText = ""
+                                        } label: {
+                                            Image(systemName: "xmark.circle.fill")
+                                                .foregroundColor(.secondary)
+                                        }
+                                    }
+                                }
+                                .padding(.vertical, 10)
+                                .padding(.horizontal, 16)
+                                .frame(height: 45)
+                                .background(Color(UIColor.systemGray6))
+                                .cornerRadius(10)
+                                
+                                // Cancel button (outside the search container)
+                                if isSearchFocused {
+                                    Button {
+                                        isSearchFocused = false
+                                    } label: {
+                                        Text("Cancel")
+                                            .foregroundColor(.accentColor)
+                                            .font(.golosText(size: 16))
+                                    }
+                                    .transition(.move(edge: .trailing).combined(with: .opacity))
+                                }
+                            }
+                            .animation(.spring(response: 0.3), value: isSearchFocused)
+                            .padding(.horizontal)
+                            
+                            Spacer()
+                                .frame(height: 15)
+                        }
+                        .background(Color(.systemBackground))
+                    }
+                    // Remove the default navigation title visibility
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbarBackground(.hidden, for: .navigationBar)
             }
 
             // Show the bottom bar overlay (only when not recording)
@@ -123,8 +210,6 @@ struct TranscriberView: View {
     @ViewBuilder
     private var recordingListView: some View {
         VStack(spacing: 0) {
-            NavigationBar()
-
             if transcriberManager.recordings.isEmpty {
                 NoRecordingsView()
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -445,6 +530,10 @@ struct TranscriberView: View {
             .windows
             .first?
             .safeAreaInsets ?? .zero
+    }
+
+    var textColor: Color {
+        colorScheme == .dark ? .white : .black
     }
 }
 
