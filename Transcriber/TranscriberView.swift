@@ -64,9 +64,9 @@ struct TranscriberView: View {
                     .toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
                             Text("yvo")
-                                .font(.logoText(size: 40))
+                                .font(.logoText(size: 43))
                                 .foregroundColor(.red)
-                                .padding(.top, 8) // safe are for title
+                                .padding(.top, 12)
                         }
                         
                         ToolbarItem(placement: .navigationBarTrailing) {
